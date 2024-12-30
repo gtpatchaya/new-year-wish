@@ -8,44 +8,33 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Mali", serif;
         margin: 0;
         padding: 0;
-        background-color: #f8f9fa;
+        height: 90vh;
+        overflow: hidden !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f6eee6;
         text-align: center;
         color: #333;
+        position: relative;
       }
       .container {
         max-width: 900px;
-        margin: 50px auto;
         padding: 20px;
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-      .marquee-container {
-        overflow: hidden;
-        white-space: nowrap;
-        width: 100%;
-        background: #dc3545;
-        color: #fff;
-        padding: 10px 0;
-        margin-bottom: 20px;
-      }
-      .marquee-text {
-        display: inline-block;
-        animation: slide-left 10s linear infinite;
-        font-size: 1.5em;
-      }
-      @keyframes slide-left {
-        from {
-          transform: translateX(100%);
-        }
-        to {
-          transform: translateX(-100%);
-        }
+        position: relative;
+        z-index: 10;
       }
       h1 {
         color: #dc3545;
@@ -69,93 +58,216 @@
         font-size: 1.5em;
         color: #555;
       }
+      .card.fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
       .copy-btn {
+        font-size: 1.5em;
+        margin-left: 10px;
+      }
+      .copy-success {
+        margin-top: 10px;
+        color: #28a745;
+        font-size: 1rem;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        animation: fadeInOut 3s ease-in-out;
+      }
+      .copy-success.show {
+        opacity: 1;
+        animation: fadeInOut 3s ease-in-out;
+      }
+      @keyframes fadeInOut {
+        0% {
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      /* Snowflake Styles */
+      .snowflake {
+        position: absolute;
+        top: -50px;
+        font-size: 1.2em;
+        color: #ffffff;
+        user-select: none;
+        pointer-events: none;
+        animation: fall linear infinite;
+      }
+      @keyframes fall {
+        0% {
+          transform: translateX(0) translateY(0) rotate(0deg);
+        }
+        100% {
+          transform: translateX(var(--end-x)) translateY(100vh) rotate(360deg);
+        }
+      }
+      .button-container {
+        text-align: center;
+      }
+
+      .coffee-button {
+        background-color: #6f4e37;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 5px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .coffee-button:hover {
+        background-color: #5c3e2d;
+      }
+
+      .text-slide {
         margin-top: 20px;
+        font-size: 16px;
+        color: gray;
+        display: inline-block;
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .text-slide.visible {
+        opacity: 1;
+        transform: translateX(0);
       }
     </style>
   </head>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <body>
-    <div class="marquee-container">
-      <span class="marquee-text">✨🎉 สุ่มคำอวยพรวันปีใหม่ 🎉✨</span>
-    </div>
     <div class="container text-center">
-      <h1>สุ่มคำอวยพรวันปีใหม่</h1>
+      <h1 style="font-weight: 700">สุ่มคำอวยพรวันปีใหม่</h1>
       <p>เพิ่มความสุขให้วันปีใหม่ด้วยคำอวยพรจากเรา</p>
 
-      <button class="btn btn-danger random-btn" onclick="generateWish()">
-        🎉 สุ่มคำอวยพร 🎉
-      </button>
       <div class="card mt-4" id="wishCard">
         คลิกปุ่มสุ่มเพื่อดูคำอวยพรของคุณ!
       </div>
-      <button
-        class="btn btn-primary copy-btn"
-        id="copyButton"
-        style="display: none"
-        onclick="copyWish()"
-      >
-        คัดลอกคำอวยพร
-      </button>
-      <p style="font-size: 16px; color: gray; margin-top: 20px">
-        ◡̈ สนับสนุนค่ากาเเฟ ☕ 0473756900 ธนาคารกสิกรไทย ปรัชญา สอนทา ◡̈
-      </p>
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-danger random-btn" onclick="generateWish()">
+          🎉 สุ่มคำอวยพร 🎉
+        </button>
+        <button
+          class="btn btn-primary copy-btn"
+          id="copyButton"
+          style="display: none"
+          onclick="copyWish()"
+        >
+          คัดลอกคำอวยพร
+        </button>
+      </div>
+
+      <div id="copySuccess" class="copy-success"></div>
+      <div class="d-flex flex-column">
+        <p style="font-size: 16px; margin: 0px; color: gray" class="mt-4">
+          ☕สนับสนุนค่ากาเเฟ ☕
+        </p>
+        <p style="font-size: 16px; margin: 0px; color: gray">
+          ◡̈0473756900 ธนาคารกสิกรไทย ปรัชญา สอนทา ◡̈
+        </p>
+      </div>
     </div>
 
     <script>
+      function toggleText() {
+        const text = document.getElementById("coffeeText");
+        text.classList.toggle("visible");
+      }
+
       const wishes = [
         "สวัสดีปีใหม่ ขอให้สุขภาพแข็งแรง ปราศจากโรคภัย และมีความสุขตลอดปี 🌟🎉",
         "ขอให้ปีใหม่นำพาความมั่งคั่งทางการเงินและความสำเร็จในชีวิตมาสู่คุณ 🎯✨",
         "สุขสันต์วันปีใหม่ ขอให้การงานราบรื่น เจริญก้าวหน้าในทุกเป้าหมาย 🏆😊",
         "ปีใหม่นี้ขอให้ครอบครัวของคุณเต็มไปด้วยความรักและความอบอุ่น 😊❤️",
-        "ขอให้ปีใหม่นี้สุขภาพดี การเงินมั่นคง และครอบครัวมีความสุข 🍀🏡",
-        "สุขสันต์วันปีใหม่ ขอให้พบแต่โอกาสดีๆ การงานมั่นคง และสุขภาพแข็งแรง 🌈🌟",
-        "ขอให้ปีใหม่นี้การงานสำเร็จ การเงินเพิ่มพูน และครอบครัวมีแต่ความสุข 🏅✨",
-        "สวัสดีปีใหม่ ขอให้สุขภาพดีตลอดปี การงานสำเร็จลุล่วง และการเงินมั่นคง 🎉😊",
-        "ขอให้ปีใหม่นี้เต็มไปด้วยสุขภาพที่แข็งแรง การเงินมั่งคั่ง และโอกาสใหม่ๆ 🌟🎯",
-        "สุขสันต์ปีใหม่ ขอให้คุณและครอบครัวมีสุขภาพที่ดี การเงินมั่นคง และชีวิตราบรื่น 🙏✨",
-        "ขอให้ปีใหม่เป็นปีที่เปี่ยมด้วยสุขภาพดี การงานก้าวหน้า และความสุขในครอบครัว 🏆😊",
-        "สุขสันต์วันปีใหม่ ขอให้ทุกวันเต็มไปด้วยสุขภาพแข็งแรง การงานเจริญรุ่งเรือง ❤️🎉",
-        "ปีใหม่นี้ขอให้สุขภาพของคุณดีเยี่ยม การงานราบรื่น และครอบครัวมีความสุข 😊✨",
-        "ขอให้ปีใหม่นำพาสุขภาพที่ดี การเงินมั่นคง และความรักในครอบครัวที่ยั่งยืน 🕊️❤️",
-        "สุขสันต์ปีใหม่ ขอให้คุณมีสุขภาพดี การงานสำเร็จ และเงินทองไหลมาเทมา 💪🏅",
-        "ขอให้ปีใหม่นี้สุขภาพดี การเงินเจริญรุ่งเรือง และครอบครัวเต็มไปด้วยความรัก 🍀❤️",
-        "สวัสดีปีใหม่ ขอให้สุขภาพดี การงานเจริญก้าวหน้า และการเงินมั่งคั่ง 🌟🎯",
-        "ปีใหม่นี้ขอให้คุณพบกับสุขภาพที่แข็งแรง การเงินมั่นคง และครอบครัวที่เปี่ยมไปด้วยความสุข 😊🌈",
-        "สุขสันต์ปีใหม่ ขอให้ครอบครัวของคุณมีความสุข สุขภาพแข็งแรง และความมั่งคั่ง 🏡❤️",
-        "ขอให้ปีใหม่นี้การงานประสบความสำเร็จ การเงินมั่งคั่ง และสุขภาพดีทุกวัน 🎉✨",
       ];
 
       function generateWish() {
         const wishCard = document.getElementById("wishCard");
         const copyButton = document.getElementById("copyButton");
+        const copySuccess = document.getElementById("copySuccess");
 
+        // เลือกคำอวยพรแบบสุ่ม
         const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
         wishCard.textContent = randomWish;
+
+        // รีเซ็ตคลาส fade-in เพื่อให้แอนิเมชันทำงานใหม่
+        wishCard.classList.remove("fade-in");
+        void wishCard.offsetWidth; // Trigger reflow
+        wishCard.classList.add("fade-in");
+
+        // แสดงปุ่มคัดลอก
         copyButton.style.display = "inline-block";
+
+        // ซ่อนข้อความแจ้งความสำเร็จ
+        copySuccess.classList.remove("show");
+        copySuccess.textContent = "";
       }
 
       function copyWish() {
         const wishCard = document.getElementById("wishCard");
+        const copySuccess = document.getElementById("copySuccess");
+
         navigator.clipboard
           .writeText(wishCard.textContent)
           .then(() => {
-            Swal.fire({
-              icon: "success",
-              title: "คัดลอกสำเร็จ!",
-              text: "คำอวยพรได้ถูกคัดลอกเรียบร้อยแล้ว 🎉",
-              confirmButtonText: "ตกลง",
-            });
+            copySuccess.textContent = "✅ คัดลอกคำอวยพรเรียบร้อยแล้ว!";
+            copySuccess.classList.add("show");
+
+            setTimeout(() => {
+              copySuccess.classList.remove("show");
+            }, 3000);
           })
           .catch((err) => {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: "ไม่สามารถคัดลอกคำอวยพรได้: " + err,
-              confirmButtonText: "ตกลง",
-            });
+            console.error("Error copying text: ", err);
           });
       }
+
+      // Create snowflakes
+      function createSnowflake() {
+        const snowflake = document.createElement("div");
+        snowflake.classList.add("snowflake");
+        snowflake.textContent = "❄";
+        snowflake.style.left = Math.random() * 100 + "vw";
+        snowflake.style.fontSize = Math.random() * 10 + 10 + "px";
+        snowflake.style.animationDuration = Math.random() * 5 + 5 + "s";
+        snowflake.style.setProperty(
+          "--end-x",
+          Math.random() * 200 - 100 + "px"
+        );
+
+        document.body.appendChild(snowflake);
+
+        // Remove snowflake after animation ends
+        setTimeout(() => {
+          snowflake.remove();
+        }, 10000);
+      }
+
+      setInterval(createSnowflake, 200);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   </body>
